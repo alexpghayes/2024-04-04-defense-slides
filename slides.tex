@@ -7,6 +7,7 @@
 % \setmonofont{Fira Mono}  % be sure to compile with XeLaTeX
 
 \usepackage{natbib}
+\usepackage{nicematrix}
 \usepackage{fontawesome5}
 \usepackage{xcolor}
 
@@ -21,6 +22,7 @@
 
 \hypersetup{colorlinks,citecolor=cyan, urlcolor=cyan, linkcolor=black}
 
+
 \title{Asymptotic unidentifiability of peer effects in the linear-in-means model}
 \date{2024-04-04 @ 12:30 pm\\ Service Memorial Institute 133, Medical Sciences Center, UW-Madison}
 \author{Alex Hayes | PhD Defense}
@@ -30,13 +32,13 @@
 
 \maketitle
 
-{
-    \usebackgroundtemplate{\includegraphics[width=\paperwidth]{figures/this_is_fine.jpeg}}
-    \begin{frame}
-    \end{frame}
-}
+% {
+%     \usebackgroundtemplate{\includegraphics[width=\paperwidth]{figures/this_is_fine.jpeg}}
+%     \begin{frame}
+%     \end{frame}
+% }
 
-\begin{frame}
+\begin{frame}{What are peer effects?}
     \begin{columns}
         \column{0.5\textwidth}
         \vspace{7mm}
@@ -63,8 +65,8 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}
-
+\begin{frame}{The canonical linear model for peer effects}
+    
     \begin{align*}
         \underbrace{Y_i}_\text{sick?} =
         \underbrace{\alpha}_{\substack{\text{base}                                    \\ \text{rate}}} +
@@ -78,7 +80,7 @@
     \end{align*}
     
     {
-    \footnotesize
+    %\footnotesize
     \begin{table}[]
         \begin{tabular}{lcl}
             Outcome          & $Y_i$    & $\in \{0, 1\}$              \\
@@ -88,10 +90,206 @@
             Node degree      & $d_i$    & $\in \mathbb{Z}^+$          \\
         \end{tabular}
     \end{table}
-    
-    * In practice, no domain restrictions required for $Y, T, A$.
     }
 \end{frame}
+
+\begin{frame}
+    \vspace{5mm}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{figures/manski1993.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Manski's reflection problem: highly structured networks break the model}
+    
+    \tikzset{every loop/.style={}}
+    
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \begin{tikzpicture}
+                    \node[shape=circle,draw=black,label=above left:{$T_A = 1$}] (A) at (0,1) {A};
+                    \node[shape=circle,draw=black,label=below left:{$T_B = 0$}] (B) at (1,0) {B};
+                    \node[shape=circle,draw=black,label=above right:{$T_C = 1$}] (C) at (1.5,1.5) {C};
+                    \node[shape=circle,draw=black,label=above right:{$T_D = 1$}] (D) at (2.75,0.5) {D};
+                    
+                    \path (A) edge [loop above] node {} (A);
+                    \path (B) edge [loop below] node {} (B);
+                    \path (C) edge [loop above] node {} (C);
+                    \path (D) edge [loop above] node {} (D);
+                    
+                    \draw (A) -- (B);
+                    \draw (A) -- (C);
+                    \draw (A) -- (D);
+                    \draw (B) -- (C);
+                    \draw (B) -- (D);
+                    \draw (C) -- (D);
+                \end{tikzpicture}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            
+            Average value of $T$ amongst peers is the same for all nodes!
+            
+            \begin{align*}
+                GT_A & = 3/4  \\
+                GT_B & = 3/4  \\
+                GT_C & = 3/4  \\
+                GT_D & = 3/4
+            \end{align*}
+            
+            \textbf{Problem:} cannot distinguish base rate $\alpha$ from interference effect $\delta$
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Manski's reflection problem: highly structured networks break the model}
+    
+    \tikzset{every loop/.style={}}
+    
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \begin{tikzpicture}
+                    \node[shape=circle,draw=black,label=above left:{$T_A = 1$}] (A) at (0,1) {A};
+                    \node[shape=circle,draw=black,label=below left:{$T_B = 0$}] (B) at (1,0) {B};
+                    \node[shape=circle,draw=black,label=above right:{$T_C = 1$}] (C) at (1.5,1.5) {C};
+                    \node[shape=circle,draw=black,label=above right:{$T_D = 1$}] (D) at (2.75,0.5) {D};
+                    
+                    \path (A) edge [loop above] node {} (A);
+                    \path[] (B) edge [loop below] node {} (B);
+                    \path (C) edge [loop above] node {} (C);
+                    \path (D) edge [loop above] node {} (D);
+                    
+                    \draw (A) -- (B);
+                    \draw (A) -- (C);
+                    \draw (A) -- (D);
+                    \draw (B) -- (C);
+                    \draw (B) -- (D);
+                    \draw (C) -- (D);
+                \end{tikzpicture}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{equation*}
+                \begin{bmatrix}
+                    Y_A \\
+                    Y_B \\
+                    Y_C \\
+                    Y_D
+                \end{bmatrix}
+                =
+                \underbrace{
+                    \begin{bNiceMatrix}[first-row,first-col]
+                         & 1_n & GY   & T & GT  \\
+                         & 1   & GY_A & 1 & 3/4 \\
+                         & 1   & GY_B & 0 & 3/4 \\
+                         & 1   & GY_C & 1 & 3/4 \\
+                         & 1   & GY_D & 1 & 3/4 \\
+                    \end{bNiceMatrix}
+                }_W
+                \begin{bmatrix}
+                    \alpha \\
+                    \beta  \\
+                    \gamma \\
+                    \delta
+                \end{bmatrix}
+                +
+                \begin{bmatrix}
+                    \varepsilon_A \\
+                    \varepsilon_B \\
+                    \varepsilon_C \\
+                    \varepsilon_D
+                \end{bmatrix}
+            \end{equation*}
+            
+            \textbf{Problem}: Design matrix $W$ becomes collinear!
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Identification}
+    
+    Define the degree matrix $D = \diag(d_1, d_2, \dots, d_n)$, where $d_i = \sum_j A_{ij}$. Let $G = D^{-1} A$ be the row-normalized adjacency matrix. Then
+    \begin{equation*} \label{eq:lim-mv}
+        Y = \alpha 1_n + \beta G Y + T \gamma + G T \delta + \varepsilon.
+    \end{equation*}
+    
+    \begin{definition}
+        We say that $(\alpha, \beta, \gamma, \delta)$ are \emph{identified} when the columns of the design matrix 
+        \begin{equation*}
+            \label{eq:design}
+            W_n = \begin{bmatrix} 1_n & GY & T & GT \end{bmatrix}.
+        \end{equation*}
+        are linearly independent. Otherwise, we say that $(\alpha, \beta, \gamma, \delta)$ are \emph{unidentified}.
+    \end{definition}
+    
+    We assume that $\mathbb E \left[\varepsilon | W_n \right] = 0$.
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{figures/bramoulle2009.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Bramoull\'e: intransivity (i.e, open triangles) fixes the problem}
+    
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \begin{tikzpicture}
+                    \node[shape=circle,draw=black] (A) at (0,1) {A};
+                    \node[shape=circle,draw=black] (B) at (1,0) {B};
+                    \node[shape=circle,draw=black] (C) at (1.5,1.5) {C};
+                    \node[shape=circle,draw=black] (D) at (2.75,0.5) {D};
+                    
+                    \draw (A) -- (B);
+                    \draw (A) -- (C);
+                    \draw (A) -- (D);
+                    \draw (C) -- (D);
+                \end{tikzpicture}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            
+            $A \leftrightarrow B \leftrightarrow D$ is an intransitive triangle. If $B$ were friends with $D$ it would ``close'' the triangle
+            
+            \vspace{4mm}
+            
+            \textbf{Since 2009:} as long as there is intransitive, $(\alpha, \beta, \gamma, \delta)$ are identified, practitioners are good to use the linear-in-means model
+            
+            \vspace{4mm}
+            
+            Reflection problem solved!
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics{figures/simulations/defense-mse.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics{figures/simulations/defense-backbone.pdf}
+    \end{figure}
+\end{frame}
+
+% action of G on nodal covariates X
+% identification and identification problems
+% manski
+% bramoulle and intransivity
+% doing some simulations, developing an estimator and the results were wonky -- what's happening
 
 \begin{frame}
     Let $G_{ij} = A_{ij} / d_i$ be the row-normalization of $A$. We express the previous model in matrix-vector notation as
@@ -103,6 +301,45 @@
         Y & = \paren*{I - \beta G}^{-1} \paren*{\alpha 1_n + \gamma T + \delta G T + \varepsilon}                                                                                \\
           & = \sum_{k=0}^\infty \beta^k G^k \paren*{\alpha 1_n + \gamma T + \delta G T + \varepsilon} & \text{since } \paren*{I - \beta G}^{-1} = \sum_{k=0}^\infty \beta^k G^k
     \end{align*}
+\end{frame}
+
+\begin{frame}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \begin{tikzpicture}
+                    \node[shape=circle,draw=black,label=above left:A] (A) at (0,1) {1};
+                    \node[shape=circle,draw=black,label=below left:B] (B) at (1,0) {0};
+                    \node[shape=circle,draw=black,label=above right:C] (C) at (1.5,1.5) {1};
+                    \node[shape=circle,draw=black,label=above right:D] (D) at (2.75,0.5) {1};
+                    
+                    \draw (A) -- (B);
+                    \draw (A) -- (C);
+                    \draw (B) -- (C);
+                    \draw (C) -- (D);
+                \end{tikzpicture}
+                \caption{$T$}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \begin{tikzpicture}
+                    \node[shape=circle,draw=black,label=above left:A] (A) at (0,1) {$\frac 12$};
+                    \node[shape=circle,draw=black,label=below left:B] (B) at (1,0) {1};
+                    \node[shape=circle,draw=black,label=above right:C] (C) at (1.5,1.5) {$\frac 23$};
+                    \node[shape=circle,draw=black,label=above right:D] (D) at (2.75,0.5) {1};
+                    
+                    \draw (A) -- (B);
+                    \draw (A) -- (C);
+                    \draw (B) -- (C);
+                    \draw (C) -- (D);
+                \end{tikzpicture}
+                \caption{$GT$}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
@@ -123,13 +360,6 @@
     \end{proposition}
     
     Promising! If $G$ is from a stochastic blockmodel, identification likely.
-\end{frame}
-
-\begin{frame}
-    \begin{figure}
-        \centering
-        \includegraphics[height=\textheight]{figures/kalm.jpg}
-    \end{figure}
 \end{frame}
 
 \begin{frame}{Disappearing asymptotic identification: a simple case \citep{li2022c}}
