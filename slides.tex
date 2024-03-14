@@ -475,21 +475,105 @@
     so $GT$ might not converge to $\mathbb E[T]$ for every node.
 \end{frame}
 
+
+\begin{frame}{Intuition: stochastic blockmodels}
+    
+    \begin{columns}
+        \column{0.45\textwidth}
+        
+        \begin{figure}
+            \includegraphics[width=\textwidth]{figures/assortative.png}
+        \end{figure}
+        
+        \column{0.55\textwidth}
+        
+        $d$ communities or ``blocks''
+        
+        $\X_{i \cdot} \in \set{0, 1}^d$ one-hot indicator of node $i$'s block
+        
+        \vspace{4mm}
+        
+        $\X$ is latent (i.e. unobserved)
+        
+        \vspace{4mm}
+        
+        $B \in [0, 1]^{d \times d}$ inter-block edge probabilities
+        
+        \vspace{4mm}
+        
+        Friendships depend on group memberships and $B$
+        
+        $\P[\X]{A_{ij} = 1} = \X_{i \cdot} B \X_{j \cdot}^T$
+        
+    \end{columns}
+    
+\end{frame}
+
+
+
+
 \begin{frame}
-    \begin{theorem}[Identification failure in random dot product graphs]
-        Let $\varepsilon$ be mean zero, i.i.d. noise and let
-        \begin{align*}
-            Y & = \alpha 1_n + \beta G Y + \gamma T + \delta G T + \varepsilon                        
-        \end{align*}
-        Suppose $\abs{\beta} < 1$. Let $(A, \X) \sim \text{RDPG}(F, n)$ and let $T = \X \in \R^{n \times d}$. Then there exists constants $C, C' \in \R^d$ such that
-        \begin{align*}
-            \lim_{n \to \infty} \sup_{i \in [n]} \abs*{GT - 1_n C}  & = \op{1},  & \text{and} \\
-            \lim_{n \to \infty} \sup_{i \in [n]} \abs*{GY - 1_n C'} & = \op{1}.
-        \end{align*}
+
+    \begin{theorem} \label{thm:rdpg}
+        Suppose that $(A, X)$ are sampled from a random dot product model where $X$ is rank $d$ with probability $1$.
+        Let $\varepsilon$ be a vector of mean zero, i.i.d.~$(\nu_\varepsilon, b_\varepsilon)$-subgamma random variables, with $(\nu_\varepsilon, b_\varepsilon)$ not depending on $n$,
+        and let
+        \begin{equation}
+            Y = \alpha 1_n + \beta G Y + X \gamma + G X \delta + \varepsilon
+        \end{equation}
+        for $\alpha, \beta \in \R$ and $\gamma, \delta \in \R^d$. Suppose that $X$ has $k \ge 2d$ distinct rows. Then, under suitable technical conditions,
+        \begin{equation*}
+            W_n = \begin{bmatrix}
+                1_n & GY & X & GX
+            \end{bmatrix}
+        \end{equation*}
+        converges uniformly to a limit object with rank $2d$ out of $2d + 2$. If any two entries of $(\alpha, \beta, \delta_1, ..., \delta_d)$ are set to zero in the data generating process, the limit object of $W_n$ is a matrix with full rank, and $\alpha, \beta, \gamma, \delta$ are thus asymptotically identifiable.
     \end{theorem}
 \end{frame}
 
+\begin{frame}{Simulation details}
+    
+    All networks in the simulations are generated from a Poisson degree-corrected stochastic blockmodel with $n$ nodes and four equally probably blocks (see Example~\ref{ex:sbm}). The edge formation matrix $B \in [0,1]^{4 \times 4}$ is set to
+    \begin{equation*}
+        B =
+        \begin{bmatrix}
+            0.5  & 0.05 & 0.05 & 0.05 \\
+            0.05 & 0.5  & 0.05 & 0.05 \\
+            0.05 & 0.05 & 0.5  & 0.05 \\
+            0.05 & 0.05 & 0.05 & 0.5  \\
+        \end{bmatrix},
+    \end{equation*}
+    and $\rho$ is such that the expected mean degree of the network $2 n^{0.7}$. $\theta_1, ..., \theta_n$ are sampled independently from a continuous uniform distribution supported on $[1, 2]$.
+\end{frame}
+
+\begin{frame}{Simulation details, cont'd}
+    We consider three distinct generative models for nodal outcomes $Y_1, ..., Y_n$.
+    \begin{enumerate}
+        \item \emph{Randomized controlled trial}: The linear-in-means model with a single nodal covariate $T_i \diid \Bern(0.5)$ for all nodes, which are sampled independently of the network. The regression model is thus
+              \begin{equation*}
+                  Y = 1_n \alpha + G Y \beta + T \gamma + G T \delta + \varepsilon,
+              \end{equation*}
+              and we fix $\alpha = 3, \beta = 0.2, \gamma = 4, \delta = 2$ and $\varepsilon \diid \calN(0, \sigma^2)$ with $\sigma = 0.1$. $\alpha, \beta$ and $\delta$ are asymptotically unidentified in this model.
+        \item \emph{Unrestricted}: The linear-in-means model, where the nodal covariates at the latent positions of the stochastic blockmodel, that is $T_i = X_i \in \R^4$. Recall that $X_i \in R^4$ where $X = U S^{1/2}$ and $U S U^T$ is the eigendecomposition of $\E[z(1), ..., z(n), \theta]{A}$. The nodal regression model is thus
+              \begin{equation*}
+                  Y = \alpha 1_n + \beta G Y + X \gamma + G X \delta + \varepsilon,
+              \end{equation*}
+              where we again set $\alpha = 3, \beta = 0.2$ and $\varepsilon \diid \calN(0, \sigma^2)$ with $\sigma = 0.1$. Since $X_i \in \R^4$, $\gamma, \delta \in \R^4$ and we fix $\delta = (2, 2, 2, 2)$ and $\gamma = (1.5, 2.5, 3.5, 4.5)$. $\alpha, \beta$ and $\delta$ are asymptotically unidentified in this model.
+        \item \emph{Restricted}: The \emph{Unrestricted} model, but with the additional restriction that $\delta = (0, 0, 2, 2)$, such that all parameters are asymptotically identifiable.
+    \end{enumerate}
+    
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{figures/simulations/mse.pdf}
+    \end{figure}
+\end{frame}
+
 \begin{frame}{Why this matters}
+    
+    \cite{paul2022a}
     
     \begin{enumerate}
         \item \cite{shalizi2011,mcfowland2021}: homophily and contagion are non-parametrically confounded. Must make parametric assumptions to estimate contagion effects.
