@@ -43,15 +43,15 @@
         \column{0.5\textwidth}
         \vspace{7mm}
         
-        \textbf{Contagion}: if my friends get sick, I am more likely to set sick
+        \underline{Contagion}: if my friends get sick, I am more likely to set sick
         
         \vspace{4mm}
         
-        \textbf{Direct effect}: if I get vaccinated, I am less likely to get sick
+        \underline{Direct effect}: if I get vaccinated, I am less likely to get sick
         
         \vspace{4mm}
         
-        \textbf{Interference}: if my friends get vaccinated, I am less likely to get sick
+        \underline{Interference}: if my friends get vaccinated, I am less likely to get sick
         
         \vspace{7mm}
         
@@ -140,7 +140,7 @@
                 GT_D & = 3/4
             \end{align*}
             
-            \textbf{Problem:} cannot distinguish base rate $\alpha$ from interference effect $\delta$
+            \underline{Problem:} cannot distinguish base rate $\alpha$ from interference effect $\delta$
         \end{column}
     \end{columns}
 \end{frame}
@@ -206,7 +206,7 @@
                 \end{bmatrix}
             \end{equation*}
             
-            \textbf{Problem}: Design matrix $W$ becomes collinear!
+            \underline{Problem}: Design matrix $W$ becomes collinear!
         \end{column}
     \end{columns}
 \end{frame}
@@ -219,12 +219,12 @@
     \end{equation*}
     
     \begin{definition}
-        We say that $(\alpha, \beta, \gamma, \delta)$ are \emph{identified} when the columns of the design matrix 
+        We say that $(\alpha, \beta, \gamma, \delta)$ are \underline{identified} when the columns of the design matrix 
         \begin{equation*}
             \label{eq:design}
             W_n = \begin{bmatrix} 1_n & GY & T & GT \end{bmatrix}.
         \end{equation*}
-        are linearly independent. Otherwise, we say that $(\alpha, \beta, \gamma, \delta)$ are \emph{unidentified}.
+        are linearly independent. Otherwise, we say that $(\alpha, \beta, \gamma, \delta)$ are \underline{unidentified}.
     \end{definition}
     
     We assume that $\mathbb E \left[\varepsilon | W_n \right] = 0$.
@@ -262,82 +262,11 @@
             
             \vspace{4mm}
             
-            \textbf{Since 2009:} as long as there is intransitive, $(\alpha, \beta, \gamma, \delta)$ are identified, practitioners are good to use the linear-in-means model
+            \underline{Since 2009:} as long as there is intransitivity in the network, $(\alpha, \beta, \gamma, \delta)$ are identified, practitioners are good to use the linear-in-means model
             
             \vspace{4mm}
             
             Reflection problem solved!
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}
-    \begin{figure}
-        \centering
-        \includegraphics{figures/simulations/defense-mse.pdf}
-    \end{figure}
-\end{frame}
-
-\begin{frame}
-    \begin{figure}
-        \centering
-        \includegraphics{figures/simulations/defense-backbone.pdf}
-    \end{figure}
-\end{frame}
-
-% action of G on nodal covariates X
-% identification and identification problems
-% manski
-% bramoulle and intransivity
-% doing some simulations, developing an estimator and the results were wonky -- what's happening
-
-\begin{frame}
-    Let $G_{ij} = A_{ij} / d_i$ be the row-normalization of $A$. We express the previous model in matrix-vector notation as
-    \begin{align*}
-        Y & = \alpha 1_n + \beta G Y + \gamma T + \delta G T + \varepsilon
-    \end{align*}
-    If $\abs{\beta} < 1$, then $I - \beta G$ is invertible and there is a unique solution 
-    \begin{align*}
-        Y & = \paren*{I - \beta G}^{-1} \paren*{\alpha 1_n + \gamma T + \delta G T + \varepsilon}                                                                                \\
-          & = \sum_{k=0}^\infty \beta^k G^k \paren*{\alpha 1_n + \gamma T + \delta G T + \varepsilon} & \text{since } \paren*{I - \beta G}^{-1} = \sum_{k=0}^\infty \beta^k G^k
-    \end{align*}
-\end{frame}
-
-\begin{frame}
-    \begin{columns}
-        \begin{column}{0.5\textwidth}
-            \begin{figure}
-                \centering
-                \begin{tikzpicture}
-                    \node[shape=circle,draw=black,label=above left:A] (A) at (0,1) {1};
-                    \node[shape=circle,draw=black,label=below left:B] (B) at (1,0) {0};
-                    \node[shape=circle,draw=black,label=above right:C] (C) at (1.5,1.5) {1};
-                    \node[shape=circle,draw=black,label=above right:D] (D) at (2.75,0.5) {1};
-                    
-                    \draw (A) -- (B);
-                    \draw (A) -- (C);
-                    \draw (B) -- (C);
-                    \draw (C) -- (D);
-                \end{tikzpicture}
-                \caption{$T$}
-            \end{figure}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{figure}
-                \centering
-                \begin{tikzpicture}
-                    \node[shape=circle,draw=black,label=above left:A] (A) at (0,1) {$\frac 12$};
-                    \node[shape=circle,draw=black,label=below left:B] (B) at (1,0) {1};
-                    \node[shape=circle,draw=black,label=above right:C] (C) at (1.5,1.5) {$\frac 23$};
-                    \node[shape=circle,draw=black,label=above right:D] (D) at (2.75,0.5) {1};
-                    
-                    \draw (A) -- (B);
-                    \draw (A) -- (C);
-                    \draw (B) -- (C);
-                    \draw (C) -- (D);
-                \end{tikzpicture}
-                \caption{$GT$}
-            \end{figure}
         \end{column}
     \end{columns}
 \end{frame}
@@ -355,88 +284,195 @@
 \end{frame}
 
 \begin{frame}
-    \begin{proposition}
-        If $\gamma \beta + \delta \neq 0$ and $G$ has three or more distinct eigenvalues, then $\alpha, \beta, \gamma$ and $\delta$ are identified.
-    \end{proposition}
-    
-    Promising! If $G$ is from a stochastic blockmodel, identification likely.
+    \begin{figure}
+        \centering
+        \includegraphics{figures/simulations/defense-mse.pdf}
+    \end{figure}
 \end{frame}
 
-\begin{frame}{Disappearing asymptotic identification: a simple case \citep{li2022c}}
-    \begin{align*}
-        \underbrace{Y_i}_\text{sick?} =
-        \underbrace{\alpha}_{\substack{\text{base}                                    \\ \text{rate}}} +
-        \underbrace{\gamma}_{\substack{\text{direct}                                  \\ \text{effect}}}
-        \underbrace{T_i}_\text{vaccinated?} + 
-        \underbrace{\delta}_{\substack{\text{interference}                            \\ \text{effect}}}
-        \underbrace{\sum_{i \neq j} \frac{A_{ij}}{d_i} T_j}_{\substack{\text{portion} \\ \text{vaccinated} \\ \text{peers}}} +
-        \underbrace{\varepsilon_i}_\text{error}
-    \end{align*}
-    
-    Problem: $GT$ term converges to a constant
-    
-    \begin{align*}
-        \sum_{i \neq j} \frac{A_{ij}}{d_i} T_j \to \pi                         
-    \end{align*}
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics{figures/simulations/defense-backbone.pdf}
+    \end{figure}
 \end{frame}
 
-\begin{frame}{$GY$ can also be a problem}
-    Suppose no node is isolated (otherwise the intercept differs for isolated and connected nodes in reduced form) then the reduced form of $Y$ is given by
+
+\begin{frame}{The problem: interference effect is an average of i.i.d. random variables}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            Even though the network is intransitive, heading towards a situation like
+            
+            \begin{equation*}
+                \begin{bmatrix}
+                    Y_1    \\
+                    Y_2    \\
+                    Y_3    \\
+                    Y_4    \\
+                    \vdots \\
+                    Y_n
+                \end{bmatrix}
+                =
+                \begin{bNiceMatrix}[first-row,first-col]
+                     & 1_n    & GY     & T      & GT       \\
+                     & 1      & GY_1   & 1      & 1/2      \\
+                     & 1      & GY_2   & 0      & 1/2      \\
+                     & 1      & GY_3   & 1      & 1/2      \\
+                     & 1      & GY_4   & 0      & 1/2      \\
+                     & \vdots & \vdots & \vdots & \vdots   \\
+                     & 1      & GY_n   & 1      & 1/2    
+                \end{bNiceMatrix}
+                \begin{bmatrix}
+                    \alpha \\
+                    \beta  \\
+                    \gamma \\
+                    \delta
+                \end{bmatrix}
+                +
+                \begin{bmatrix}
+                    \varepsilon_1 \\
+                    \varepsilon_2 \\
+                    \varepsilon_3 \\
+                    \varepsilon_4 \\
+                    \vdots        \\
+                    \varepsilon_n
+                \end{bmatrix}
+            \end{equation*}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            The $GT$ term converges to a constant
+            
+            \begin{align*}
+                \sum_{i \neq j} \frac{A_{ij}}{d_i} T_j \to \frac 12                       
+            \end{align*}
+            
+            as $d_i \to \infty$
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{$GY$ term also becomes colinear with intercept}
+    Recall
+    \begin{align*}
+        Y & = \alpha 1_n + \beta G Y + \gamma T + \delta G T + \varepsilon
+    \end{align*}
+    If $\abs{\beta} < 1$, then $I - \beta G$ is invertible and there is a unique solution 
+    \begin{align*}
+        Y & = \paren*{I - \beta G}^{-1} \paren*{\alpha 1_n + \gamma T + \delta G T + \varepsilon}                                                                                \\
+          & = \sum_{k=0}^\infty \beta^k G^k \paren*{\alpha 1_n + \gamma T + \delta G T + \varepsilon} & \text{since } \paren*{I - \beta G}^{-1} = \sum_{k=0}^\infty \beta^k G^k
+    \end{align*}
+    
+    * This ``reduced form'' of the linear-in-means model also characterizes the data generating process
+\end{frame}
+
+\begin{frame}{$GY$ term also becomes colinear with intercept}
+    Suppose no node is isolated. Then, the reduced form of $Y$ is given by
     \begin{align*}
         Y & = \frac{\alpha}{1 - \beta} 1_n  + \gamma T + (\gamma \beta + \delta) \sum_{k=0}^\infty \beta^k G^{k+1} T + \sum_{k=0}^\infty \beta^k G^k \varepsilon
     \end{align*}
-    then
+    and further
     \begin{align*}
         GY = 
         \frac{\alpha}{1 - \beta} 1_n + 
         \underbrace{\gamma G T}_{\substack{\text{neighborhood}                                              \\ \text{average}}} + 
-        \underbrace{(\gamma \beta + \delta) \sum_{k=0}^\infty \beta^k G^{k+2} T}_{\substack{\text{repeated} \\ \text{neighborhood} \\ \text{averages}}} +
-        \underbrace{\sum_{k=0}^\infty \beta^k G^{k+1} \varepsilon}_{\substack{\text{neighborhood}           \\ \text{repeated} \\ \text{averages}}}
+        \underbrace{(\gamma \beta + \delta) \sum_{k=0}^\infty \beta^k G^{k+2} T}_{\substack{\text{repeated} \\ \text{averages} \\ \text{of $T$}}} +
+        \underbrace{\sum_{k=0}^\infty \beta^k G^{k+1} \varepsilon}_{\substack{\text{repeated}               \\ \text{averages} \\ \text{of $\varepsilon$}}}
     \end{align*}
+    If neighborhood averages $GT$ are converging, repeated neighborhood averages converge as well, because $G 1_n = 1_n$ (neighborhood average of constants is constant)
 \end{frame}
 
 \begin{frame}
-    \begin{align*}
-        GY = 
-        \frac{\alpha}{1 - \beta} 1_n + 
-        \underbrace{\gamma G T}_{\substack{\text{neighborhood}                                              \\ \text{average}}} + 
-        \underbrace{(\gamma \beta + \delta) \sum_{k=0}^\infty \beta^k G^{k+2} T}_{\substack{\text{repeated} \\ \text{neighborhood} \\ \text{averages}}} +
-        \underbrace{\sum_{k=0}^\infty \beta^k G^{k+1} \varepsilon}_{\substack{\text{neighborhood}           \\ \text{repeated} \\ \text{averages}}}
-    \end{align*}
-    If neighborhood averages $GT$ are converging, repeated neighborhood averages converge as well\footnote{Possibly under suitable conditions}, because $G 1_n = 1_n$ (neighborhood average of constants is constant)
+    \begin{figure}
+        \centering
+        \includegraphics{figures/simulations/defense-vif.pdf}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
-    Roughly, if
-    \begin{enumerate}
-        \item neighborhoods $d_i$ are all getting larger in $n$, and
-        \item there is no CLT/LLN breaking strong dependence between network $A$ and nodal covariate $T$
-    \end{enumerate}
-    Then 
-    \begin{align*}
-        \lim_{n \to \infty} GT & \to C  & C \in \R   \\
-        \lim_{n \to \infty} GY & \to C' & C' \in \R
-    \end{align*}
+
+    \begin{definition}
+        We say that $(\alpha, \beta, \gamma, \delta)$ are \underline{asymptotically identified} when the design matrix \eqref{eq:design} converges to a limit object $W$ in the sense that
+        \begin{equation*}
+            \max_{ij} \abs*{
+            \begin{bmatrix} 1_n & GY & T & GT \end{bmatrix}_{ij} - W_{ij}
+            } = o(1)
+        \end{equation*}
+        and the columns of the $W$ are linearly independent. If the columns of $W$ are linearly dependent, we say that $(\alpha, \beta, \gamma, \delta)$ are asymptotically unidentified.
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+
+    \begin{assumption}[1]
+        \label{ass:nonid}
+        Suppose that
+        \begin{enumerate}
+            \item $T_1,T_2,\dots,T_n$ are independent with shared mean $\zeta \in \R$, and $T$ is independent of $A$.
+            \item $\{ T_i - \zeta : i \in [n] \}$ are independent $(\nu,b)$-subgamma random variables.
+            \item $\varepsilon_1, \varepsilon_2, \dots, \varepsilon_n$ are independent subgamma random variables with parameters not depending on $n$.
+                  % more precisely: the sequence of networks A(n) is such that
+            \item $A$ is such that
+                  \begin{equation*}
+                      \max_{i \in [n]} \frac{1}{d_i^2} \sum_{j=1}^n A_{ij}^2
+                      = o\left( \frac{ 1 }{ \nu \log^2 n } \right)
+                      ~\text{and}~
+                      \max_{j \in [n]} \frac{ A_{ij} }{ d_i }
+                      = o\left( \frac{ 1 }{ b \log n } \right).
+                  \end{equation*}
+        \end{enumerate}
+    \end{assumption}
     
-    \textbf{Then contagion and interference effects are the same for everyone, and indistinguishable from base rates}
     
-    The direct effect $\gamma$ is still identified.
+    The fourth condition requires that the size of each neighborhood is growing. When the network is binary, such that $A_{ij} \in \set{0, 1}$, it reduces to $\min_{i \in [n]} d_i = \omega(\log n)$.
+    That is, the size of the smallest neighborhood must grow at a slightly faster than $\log n$ rate. This implies that no nodes in the network are isolated. In the more general case of a weighted, non-binary network, the third condition it requires that no individual edge accounts for too much of the total ``weight'' incident on any vertex.
 \end{frame}
 
 \begin{frame}
-    \begin{theorem}[Identification failure when $T$ independent of $A$]
-        Let $\varepsilon$ be mean zero, i.i.d. noise and let
-        \begin{align*}
-            Y & = \alpha 1_n + \beta G Y + \gamma T + \delta G T + \varepsilon                        
-        \end{align*}
-        Suppose $\abs{\beta} < 1$. If $T$ is sub-gamma and independent of the network $A$, and $\min_{i \in [n]} d_i = \omega(\log n)$, then there exists constants $C, C' \in \R$ such that
-        \begin{align*}
-            \lim_{n \to \infty} \sup_{i \in [n]} \abs*{GT - 1_n C}  & = \op{1},  & \text{and} \\
-            \lim_{n \to \infty} \sup_{i \in [n]} \abs*{GY - 1_n C'} & = \op{1}.
-        \end{align*}
+
+    \begin{lemma}[1] \label{thm:indepcov:nonid}
+        Under Assumption~\ref{ass:nonid},
+        \begin{equation*}
+            \max_{i \in [n]} \Big\| [GT]_i - \zeta \Big\|
+            = o(1) ~ \text{ almost surely }
+        \end{equation*}
+        and there exists $\eta = \eta(\zeta, \alpha, \beta, \gamma, \delta) \in \R$ such that
+        \begin{equation*}
+            \max_{i \in [n]} \Big\| [GY]_i - \eta \Big\|
+            = o(1) ~ \text{ almost surely.}
+        \end{equation*}
+    \end{lemma}
+    
+    \begin{theorem}[1]
+        \label{cor:indep}
+        Under Assumption \ref{ass:nonid}, $\alpha, \beta$ and $\delta$ are asymptotically unidentified.
     \end{theorem}
+\end{frame}
+
+\begin{frame}{Caveats}
+    \begin{enumerate}
+        \item \underline{Isolated nodes}: If all the connected components that are not singletons satisfying Assumption \ref{ass:nonid}, can recover $\alpha$ but $\beta$ and $\delta$ are still aliased.
+        \item \underline{Sparse networks}: Our results don't cover sparse networks!
+        \item \underline{Non-random covariates}: Our results don't cover fixed $T$!
+        \item \underline{Independence}: What if $T$ and the network $A$ are dependent?
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics{figures/simulations/defense-backbone-dependent.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Why dependence might help}
+    The $GT$ term is \underline{not longer an average of independent observations}
     
-    \footnotesize * This covers fixed networks and conditioning on the network
+    \begin{align*}
+        \sum_{i \neq j} \frac{A_{ij}}{d_i} T_j                 
+    \end{align*}
+    
+    so $GT$ might not converge to $\mathbb E[T]$ for every node.
 \end{frame}
 
 \begin{frame}
@@ -472,7 +508,7 @@
 
 \begin{frame}{Thank you! Questions?}
     
-    \textbf{Stay in touch}
+    \underline{Stay in touch}
     
     \begin{itemize}
         \item[] \faIcon{twitter} \href{https://twitter.com/alexpghayes}{@alexpghayes}
