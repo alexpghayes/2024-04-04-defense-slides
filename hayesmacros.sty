@@ -1,10 +1,5 @@
 \ProvidesPackage{hayesmacros}[2019/04/15 macros for personal use]
-\RequirePackage{amsmath, amsfonts, graphicx, ifthen, mathtools, bm, tikz}
-
-\DeclareFontFamily{U}{mathx}{}
-\DeclareFontShape{U}{mathx}{m}{n}{<-> mathx10}{}
-\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
-\DeclareMathAccent{\widecheck}{0}{mathx}{"71}
+\RequirePackage{amsmath, amsfonts, graphicx, ifthen, mathtools, bm}
 
 % feedback macros
 
@@ -14,19 +9,28 @@
 
 % macros specific to this paper
 
-\newcommand{\betacheck}{\widecheck{\beta}}
+\newcommand{\Ni}{\mathcal N(i)}
 
-\newcommand{\Zcheck}{\widecheck{Z}}
-\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+\newcommand{\deltamin}{\delta_{{\min}}}
+
+
+\newcommand{\ubar}{\bar{u}}
+\newcommand{\vbar}{\bar{v}}
+\newcommand{\Xbar}{\bar{X}}
 
 \newcommand{\gammahat}{\hat{\gamma}}
 \newcommand{\gammatilde}{\tilde{\gamma}}
 \newcommand{\epstilde}{\tilde{\varepsilon}}
 \newcommand{\utilde}{\tilde{u}}
 \newcommand{\vtilde}{\tilde{v}}
+\newcommand{\Mtilde}{\tilde{M}}
 \newcommand{\Otilde}{\tilde{O}}
+\newcommand{\Ttilde}{\tilde{T}}
 \newcommand{\Ytilde}{\tilde{Y}}
 \newcommand{\Ztilde}{\tilde{Z}}
+
+\newcommand{\nueps}{\nu_\varepsilon}
+\newcommand{\beps}{b_\varepsilon}
 
 \newcommand{\Shat}{\widehat{S}}
 \newcommand{\Uhat}{\widehat{U}}
@@ -42,9 +46,11 @@
 \newcommand{\Gtilde}{\tilde{G}}
 
 \newcommand{\Q}{Q}
+\newcommand{\C}{C}
 \newcommand{\X}{X}
 \newcommand{\Xhat}{\widehat{\X}}
 
+\renewcommand{\c}{\bm c}
 \newcommand{\w}{\bm w}
 \newcommand{\Z}{Z}
 \newcommand{\Zhat}{\widehat{Z}}
@@ -116,6 +122,8 @@
 \newcommand{\betazero}{\beta_0}
 \newcommand{\betat}{\beta_\text{t}}
 \newcommand{\betac}{\beta_\text{c}}
+\newcommand{\betatc}{\beta_\text{tc}}
+\newcommand{\betaL}{\betatc}
 \newcommand{\betad}{\beta_\text{d}}
 \newcommand{\betagd}{\beta_\text{gd}}
 \newcommand{\betagw}{\beta_\text{gw}}
@@ -195,6 +203,7 @@
 
 \newcommand \calD {\mathcal{D}}
 \newcommand \calN {\mathcal{N}}
+\newcommand \calS {\mathcal{S}}
 
 \newcommand \Sigmabeta {\Sigma_\beta}
 \newcommand \SigmaTheta {\Sigma_\Theta}
@@ -293,9 +302,9 @@
 % CALCULUS SHORTCUTS
 
 \newcommand{\dx}[1][]{%
-    \ifthenelse{ \equal{#1}{} }
-    {\ensuremath{\;\mathrm{d}x}}
-    {\ensuremath{\;\mathrm{d}#1}}
+	\ifthenelse{ \equal{#1}{} }
+	{\ensuremath{\;\mathrm{d}x}}
+	{\ensuremath{\;\mathrm{d}#1}}
 }
 
 
@@ -307,33 +316,33 @@
 % TODO: common distributions, distributional params
 
 \renewcommand{\P}[2][]{%
-    \ifthenelse{ \equal{#1}{} }
-    {\ensuremath{\mathbb{P} \paren*{#2}}}
-    {\ensuremath{\mathbb{P} \paren*{#2 \, \middle \vert \, #1}}}
+	\ifthenelse{ \equal{#1}{} }
+	{\ensuremath{\mathbb{P} \paren*{#2}}}
+	{\ensuremath{\mathbb{P} \paren*{#2 \, \middle \vert \, #1}}}
 }
 
 \newcommand{\E}[2][]{%
-    \ifthenelse{ \equal{#1}{} }
-    {\ensuremath{\mathbb{E} \brac*{#2}}}
-    {\ensuremath{\mathbb{E} \brac*{#2 \, \middle \vert \, #1}}}
+	\ifthenelse{ \equal{#1}{} }
+	{\ensuremath{\mathbb{E} \brac*{#2}}}
+	{\ensuremath{\mathbb{E} \brac*{#2 \, \middle \vert \, #1}}}
 }
 
 \newcommand{\V}[2][]{%
-    \ifthenelse{ \equal{#1}{} }
-    {\ensuremath{\mathbb{V} \brac*{#2}}}
-    {\ensuremath{\mathbb{V} \brac*{#2 \, \middle \vert \, #1}}}
+	\ifthenelse{ \equal{#1}{} }
+	{\ensuremath{\mathbb{V} \brac*{#2}}}
+	{\ensuremath{\mathbb{V} \brac*{#2 \, \middle \vert \, #1}}}
 }
 
 \newcommand{\Ehat}[2][]{%
-    \ifthenelse{ \equal{#1}{} }
-    {\ensuremath{\widehat{\mathbb{E}} \brac*{#2}}}
-    {\ensuremath{\widehat{\mathbb{E}} \brac*{#2 \, \middle \vert \, #1}}}
+	\ifthenelse{ \equal{#1}{} }
+	{\ensuremath{\widehat{\mathbb{E}} \brac*{#2}}}
+	{\ensuremath{\widehat{\mathbb{E}} \brac*{#2 \, \middle \vert \, #1}}}
 }
 
 \newcommand{\Vhat}[2][]{%
-    \ifthenelse{ \equal{#1}{} }
-    {\ensuremath{\widehat{\mathbb{V}} \brac*{#2}}}
-    {\ensuremath{\widehat{\mathbb{V}} \brac*{#2 \, \middle \vert \, #1}}}
+	\ifthenelse{ \equal{#1}{} }
+	{\ensuremath{\widehat{\mathbb{V}} \brac*{#2}}}
+	{\ensuremath{\widehat{\mathbb{V}} \brac*{#2 \, \middle \vert \, #1}}}
 }
 
 \newcommand \Cov [2] {\mathbf{Cov} \paren*{#1, #2}}
@@ -357,6 +366,10 @@
 \DeclareMathOperator*{\diag}{diag}
 \DeclareMathOperator*{\supp}{supp}
 \DeclareMathOperator*{\vecc}{vec}
-\DeclareMathOperator*{\Bern}{Bernoulli}
+\DeclareMathOperator*{\Bern}{Bern}
 
 \newcommand \Normal [2] {\mathcal N \paren*{#1, #2}}
+
+\newcommand{\secmm}{\Lambda}
+\newcommand{\Jmx}{\mathbf{J}}
+
