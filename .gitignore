@@ -1,0 +1,17 @@
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.out
+*-blx.bib
+*.run.xml
+*.bpx
+*.bcf
+*.xdv
+*.tmp
+*.nav
+*.snm
+*.toc
